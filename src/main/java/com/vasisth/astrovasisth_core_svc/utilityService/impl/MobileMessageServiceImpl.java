@@ -8,6 +8,6 @@ public class MobileMessageServiceImpl implements MobileMessageService {
 
     @Override
     public boolean sendLoginOtpToMobile(String mobile, String otp) {
-        return true;
+        return true; 
     }
 }
