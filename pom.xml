@@ -96,11 +96,6 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.12.6</version>
 		</dependency>
-		<dependency>
-			<groupId>com.twilio.sdk</groupId>
-			<artifactId>twilio</artifactId>
-			<version>10.9.2</version>
-		</dependency>
 	</dependencies>
 
 	<build>
