@@ -1,5 +1,5 @@
 package com.vasisth.astrovasisth_core_svc.utilityService;
 
-public interface EmailService {
-    boolean sendLoginOtpToEmail(String to,String subject, String message);
+public interface UtilityService {
+    String manageOtp(String mobileNo,String email);
 }
