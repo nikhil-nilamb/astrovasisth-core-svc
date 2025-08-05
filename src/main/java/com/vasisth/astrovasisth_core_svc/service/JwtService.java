@@ -18,16 +18,16 @@ public class JwtService {
 
     private static final long EXPIRATION_TIME = 864_000_000; // 10 days
 
-    public String generateToken(String username) {
+    public String generateToken(String data) {
         return Jwts.builder()
-                .subject(username)
+                .subject(data)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignKey())
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    public String extractId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -49,6 +49,22 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    public Claims validateToken(String token) {
+        try {
+            return Jwts.parser()
+                    .setSigningKey(getSignKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getToken(String token) {
+        return token.replace("Bearer ", "");
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
