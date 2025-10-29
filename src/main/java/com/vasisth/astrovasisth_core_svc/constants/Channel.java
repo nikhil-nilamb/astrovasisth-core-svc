@@ -1,5 +1,5 @@
 package com.vasisth.astrovasisth_core_svc.constants;
 
-public enum Role {
-    ADMIN,EXECUTIVE,VASISTH,USER
+public enum Channel {
+    MOBILE_CUSTOMER,COLLEAGUE
 }

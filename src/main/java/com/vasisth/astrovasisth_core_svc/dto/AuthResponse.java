@@ -15,4 +15,5 @@ public class AuthResponse {
     private String role;
     private String status;
     private String token;
+    private String profileStatus;
 }

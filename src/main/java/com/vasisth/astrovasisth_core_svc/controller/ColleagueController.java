@@ -22,6 +22,11 @@ public class ColleagueController {
         return ResponseEntity.ok(colleagueService.getAllColleagues());
     }
 
+    @GetMapping("/vasisths")
+    public ResponseEntity<List<ColleagueResponse>> getAllActiveVasisth() {
+        return ResponseEntity.ok(colleagueService.getAllActiveVasisth());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ColleagueResponse> getColleagueById(@PathVariable String id) {
         return ResponseEntity.ok(colleagueService.getColleagueById(id));

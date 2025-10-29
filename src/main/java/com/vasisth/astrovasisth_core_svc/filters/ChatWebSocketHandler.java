@@ -1,8 +1,18 @@
 package com.vasisth.astrovasisth_core_svc.filters;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vasisth.astrovasisth_core_svc.constants.Role;
+import com.vasisth.astrovasisth_core_svc.dto.ChatHistoryReqRes;
+import com.vasisth.astrovasisth_core_svc.entity.Message;
+import com.vasisth.astrovasisth_core_svc.service.ChatHistoryService;
 import com.vasisth.astrovasisth_core_svc.service.JwtService;
+import com.vasisth.astrovasisth_core_svc.service.impl.ChatHistoryServiceFactory;
+import com.vasisth.astrovasisth_core_svc.service.impl.ChatHistoryServiceImpl;
 import io.jsonwebtoken.Claims;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,8 +26,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final JwtService jwtUtil;
+    private final ChatHistoryService chatHistoryService;
+    ObjectMapper om = new ObjectMapper();
 
-    public ChatWebSocketHandler(JwtService jwtUtil) {
+    public ChatWebSocketHandler(JwtService jwtUtil,ChatHistoryService chatHistoryService) {
+        this.chatHistoryService = chatHistoryService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -64,10 +77,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             return;
         }
         String payload = message.getPayload();
+        Message commingMessage = om.readValue(payload, Message.class);
         sessions.forEach((id, ws) -> {
             if (session.getId().equals(id)) {
                 try {
-                    ws.sendMessage(new TextMessage(payload));
+                    ChatHistoryReqRes chatHistoryReqRes = new ChatHistoryReqRes();
+                    chatHistoryReqRes.setMessage(commingMessage.getMessage());
+                    chatHistoryReqRes.setColleagueId(commingMessage.getColleagueId());
+                    chatHistoryReqRes.setCustomerId(commingMessage.getCustomerId());
+                    chatHistoryService.saveChatHistoryByCustomer(chatHistoryReqRes, Role.USER);
+                    ws.sendMessage(new TextMessage(om.writeValueAsString(commingMessage)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

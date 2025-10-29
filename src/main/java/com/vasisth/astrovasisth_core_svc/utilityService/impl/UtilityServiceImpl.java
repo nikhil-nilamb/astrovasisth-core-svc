@@ -19,8 +19,12 @@ public class UtilityServiceImpl implements UtilityService {
         String otp = generateOtp();
         String otpMessage = String.format(UtilityConstant.OTP_MESSAGE, otp);
         System.out.println(otp);
-        boolean smsSent = mobileMessageService.sendLoginOtpToMobile(mobileNo, otpMessage);
-        boolean emailSent = emailService.sendLoginOtpToEmail(email,UtilityConstant.OTP_EMAIL_SUBJECT,  otpMessage);
+        if(!StringUtil.isNullOrEmpty(mobileNo)){
+            boolean smsSent = mobileMessageService.sendLoginOtpToMobile(mobileNo, otpMessage);
+        }
+        if(!StringUtil.isNullOrEmpty(email)){
+            boolean emailSent = emailService.sendLoginOtpToEmail(email,UtilityConstant.OTP_EMAIL_SUBJECT,  otpMessage);
+        }
         return otp;
     }
 

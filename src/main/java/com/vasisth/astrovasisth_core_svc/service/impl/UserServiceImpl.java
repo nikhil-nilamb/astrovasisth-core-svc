@@ -1,9 +1,11 @@
 package com.vasisth.astrovasisth_core_svc.service.impl;
 
 import com.vasisth.astrovasisth_core_svc.dto.AuthResponse;
+import com.vasisth.astrovasisth_core_svc.entity.Colleague;
 import com.vasisth.astrovasisth_core_svc.entity.User;
 import com.vasisth.astrovasisth_core_svc.exception.CustomException;
 import com.vasisth.astrovasisth_core_svc.exception.GlobalExceptionHandler;
+import com.vasisth.astrovasisth_core_svc.repo.ColleagueRepository;
 import com.vasisth.astrovasisth_core_svc.repo.UserRepository;
 import com.vasisth.astrovasisth_core_svc.service.JwtService;
 import com.vasisth.astrovasisth_core_svc.service.UserService;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ColleagueRepository colleagueRepository;
     private final JwtService tokenService;
 
     @Override
@@ -29,17 +32,19 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new CustomException("Invalid token");
         }
-        User user = userRepository.findById(userId)
+        Colleague colleague = colleagueRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User not found"));
-        return  createAuthResponse(token , user);
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new CustomException("User not found"));
+        return  createAuthResponse(token , colleague);
     }
 
-    private AuthResponse createAuthResponse(String token , User user) {
+    private AuthResponse createAuthResponse(String token , Colleague user) {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setToken(token);
         authResponse.setEmail(user.getEmail());
         authResponse.setMobile(user.getMobile());
-        authResponse.setFullName(user.getFullName());
+        authResponse.setFullName(user.getFirstName() + " " + user.getLastName());
         authResponse.setRole(user.getRole().toString());
         authResponse.setId(user.getId().toString());
         return authResponse;

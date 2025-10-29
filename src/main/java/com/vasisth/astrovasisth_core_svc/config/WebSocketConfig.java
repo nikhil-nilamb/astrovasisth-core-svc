@@ -1,7 +1,9 @@
 package com.vasisth.astrovasisth_core_svc.config;
 
 import com.vasisth.astrovasisth_core_svc.filters.ChatWebSocketHandler;
+import com.vasisth.astrovasisth_core_svc.service.ChatHistoryService;
 import com.vasisth.astrovasisth_core_svc.service.JwtService;
+import com.vasisth.astrovasisth_core_svc.service.impl.ChatHistoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,14 +19,18 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private ChatHistoryService chatHistoryService;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler(), "/chat")
+        registry.addHandler(webSocketHandler(chatHistoryService), "/chat")
                 .setAllowedOrigins("*");
     }
 
     @Bean
-    public WebSocketHandler webSocketHandler() {
-        return new ChatWebSocketHandler(jwtService);
+    public WebSocketHandler webSocketHandler(ChatHistoryService chatHistoryService) {
+        return new ChatWebSocketHandler(jwtService,chatHistoryService);
     }
 }

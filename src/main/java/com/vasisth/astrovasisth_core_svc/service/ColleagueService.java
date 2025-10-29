@@ -14,4 +14,5 @@ public interface ColleagueService {
     void deleteColleague(String id);
     ColleagueResponse approveColleague(String id);
     ColleagueResponse blockColleague(String id);
+    List<ColleagueResponse> getAllActiveVasisth();
 }

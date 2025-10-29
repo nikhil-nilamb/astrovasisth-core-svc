@@ -17,13 +17,18 @@ public class ColleagueResponse {
     private UUID id;
     private String firstName;
     private String lastName;
+    private String dob;
+    private String gender;
+    private String qualification;
+    private String yearOfPassout;
+    private String workingSince;
     private String email;
     private String mobile;
     private String designation;
-    private String linkedInProfile;
     private String skills;
-    private String experience;
-    private String location;
-    private String profileImageUrl;
+    private String address;
+    private String role;
     private int approveCount;
+    private String profileStatus;
+    private String approvedBy;
 }

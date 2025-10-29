@@ -1,9 +1,10 @@
 package com.vasisth.astrovasisth_core_svc.entity;
 
 import com.vasisth.astrovasisth_core_svc.constants.ColleagueProfileStatus;
-import com.vasisth.astrovasisth_core_svc.constants.Role;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
@@ -13,9 +14,9 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "colleague")
+@Table(name = "customer")
 @NoArgsConstructor
-public class Colleague {
+public class Customer {
     @Id
     @GeneratedValue
     @UuidGenerator
@@ -24,25 +25,14 @@ public class Colleague {
     private String lastName;
     private String dob;
     private String gender;
-    private String qualification;
-    private String yearOfPassout;
-    private String workingSince;
     private String email;
     private String mobile;
     private String password;
-    private String designation;
-    private String skills;
     private String address;
     private boolean isActive = false;
     private boolean isDeleted = false;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private UUID userId;
-    private UUID updatedBy;
-    private UUID createdBy;
-    private String verifiedBy;
-    private Role role;
-    private int approveCount = 0;
-    private String otp;
     private ColleagueProfileStatus profileStatus = ColleagueProfileStatus.INCOMPLETE;
+    private String otp;
 }

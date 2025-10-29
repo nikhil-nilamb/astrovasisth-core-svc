@@ -1,5 +1,6 @@
 package com.vasisth.astrovasisth_core_svc.filters;
 
+import com.vasisth.astrovasisth_core_svc.constants.Channel;
 import com.vasisth.astrovasisth_core_svc.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,6 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
+        String channel = request.getHeader("x-channel");
         String token = null;
         String userId = null;
 
@@ -39,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(channel + "&-&" +userId);
 
             if (jwtService.isTokenValid(token)) {
                 UsernamePasswordAuthenticationToken authToken =
