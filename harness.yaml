@@ -1,0 +1,30 @@
+pipeline:
+  name: GitHub-demo-pipeline
+  identifier: GitHubdemopipeline
+  projectIdentifier: githubharnessproject
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: validate-ex
+        identifier: validateex
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: man_clean
+                  identifier: man_clean
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: mvn clean
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
